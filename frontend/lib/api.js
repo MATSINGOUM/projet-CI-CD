@@ -37,3 +37,4 @@ export async function deactivateAccount(id) {
     method: "PATCH",
   });
 }
+
