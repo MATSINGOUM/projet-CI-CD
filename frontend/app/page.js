@@ -19,9 +19,9 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex items-center justify-center">
       <div className="w-full max-w-md bg-white p-8 rounded-xl shadow-md">
-        <h1 className="text-2xl font-bold text-center mb-6">
-          Admin Login
-        </h1>
+      <h1 className="text-2xl font-bold text-center mb-6 text-black">
+        Admin Login
+      </h1>
 
         <form onSubmit={handleLogin} className="space-y-4">
           <input
