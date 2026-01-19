@@ -1,30 +1,61 @@
-/vendor/
-node_modules/
-npm-debug.log
-yarn-error.log
+# =========================
+# Global
+# =========================
+.DS_Store
+Thumbs.db
+*.log
 
-# Laravel 4 specific
-bootstrap/compiled.php
-app/storage/
-
-# Laravel 5 & Lumen specific
-public/storage
-public/hot
-
-# Laravel 5 & Lumen specific with changed public path
-public_html/storage
-public_html/hot
-
-storage/*.key
+# =========================
+# Environment files
+# =========================
 .env
-Homestead.yaml
-Homestead.json
-/.vagrant
-.phpunit.result.cache
+.env.*
+!.env.example
 
-/public/build
-/storage/pail
-.env.backup
-.env.production
-.phpactor.json
-auth.json
+# =========================
+# Laravel
+# =========================
+/auth-service/vendor/
+/auth-service/node_modules/
+/auth-service/storage/*.key
+/auth-service/storage/logs/
+/auth-service/storage/framework/cache/
+/auth-service/storage/framework/sessions/
+/auth-service/storage/framework/views/
+/auth-service/bootstrap/cache/
+
+/account-service/vendor/
+/account-service/node_modules/
+/account-service/storage/*.key
+/account-service/storage/logs/
+/account-service/storage/framework/cache/
+/account-service/storage/framework/sessions/
+/account-service/storage/framework/views/
+/account-service/bootstrap/cache/
+
+# =========================
+# Next.js
+# =========================
+/frontend/node_modules/
+/frontend/.next/
+/frontend/out/
+/frontend/.env.local
+/frontend/.env.*.local
+/frontend/npm-debug.log*
+/frontend/yarn-error.log*
+
+# =========================
+# Docker
+# =========================
+docker-compose.override.yml
+*.pid
+
+# =========================
+# IDE / Editor
+# =========================
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln

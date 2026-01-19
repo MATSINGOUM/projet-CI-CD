@@ -1,0 +1,60 @@
+version: "3.9"
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: bank_db
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+  auth-service:
+    build: ./auth-service
+    container_name: auth-service
+    volumes:
+      - ./auth-service:/var/www
+    depends_on:
+      - mysql
+    environment:
+      DB_HOST: mysql
+      DB_DATABASE: bank_db
+      DB_USERNAME: user
+      DB_PASSWORD: password
+    ports:
+      - "8000:8000"
+    command: php artisan serve --host=0.0.0.0 --port=8000
+
+  account-service:
+    build: ./account-service
+    container_name: account-service
+    volumes:
+      - ./account-service:/var/www
+    depends_on:
+      - mysql
+    environment:
+      DB_HOST: mysql
+      DB_DATABASE: bank_db
+      DB_USERNAME: user
+      DB_PASSWORD: password
+    ports:
+      - "8001:8000"
+    command: php artisan serve --host=0.0.0.0 --port=8000
+
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - auth-service
+      - account-service
+
+volumes:
+  db_data:
