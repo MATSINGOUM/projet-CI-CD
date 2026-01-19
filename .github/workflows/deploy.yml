@@ -72,7 +72,7 @@ jobs:
         key: ${{ secrets.EC2_KEY }}
         script: |
           cd /home/ubuntu/projet-CI-CD
-          docker compose down || true
-          echo "${{ secrets.DOCKER_TOKEN }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-          docker compose pull
-          docker compose up -d
+          sudo docker compose down || true
+          echo "${{ secrets.DOCKER_TOKEN }}" | sudo docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+          sudo docker compose pull
+          sudo docker compose up -d
