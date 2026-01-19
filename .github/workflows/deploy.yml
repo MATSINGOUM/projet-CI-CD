@@ -30,7 +30,7 @@ jobs:
 
     - name: Build and push user-service
       run: |
-        docker build -t ${{ secrets.DOCKER_USERNAME }}/projet-user:latest ./services/user-service
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/projet-user:latest ./services/users-service
         docker push ${{ secrets.DOCKER_USERNAME }}/projet-user:latest
 
     - name: Deploy on EC2
