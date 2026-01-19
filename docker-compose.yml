@@ -1,17 +1,17 @@
 services:
 
   accounts-service:
-    build: ./services/accounts_service
+    image: especha/projet-accounts:latest
     container_name: accounts-service
     restart: always
 
   user-service:
-    build: ./services/users_service
+    image: especha/projet-user:latest
     container_name: user-service
     restart: always
 
   frontend:
-    build: ./frontend
+    image: especha/projet-frontend:latest
     container_name: frontend
     restart: always
 
