@@ -12,23 +12,33 @@ jobs:
     - name: Checkout repo
       uses: actions/checkout@v4
 
+    - name: Set changed directories
+      id: changes
+      run: |
+        # Compare avec le commit précédent
+        echo "CHANGED_DIRS=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | cut -d/ -f1 | sort -u)" >> $GITHUB_ENV
+        echo "Changed directories: $CHANGED_DIRS"
+
     - name: Log in to Docker Hub using token
       uses: docker/login-action@v2
       with:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_TOKEN }}
 
-    - name: Build and push frontend
+    - name: Build and push frontend if changed
+      if: contains(env.CHANGED_DIRS, 'frontend')
       run: |
         docker build -t ${{ secrets.DOCKER_USERNAME }}/projet-frontend:latest ./frontend
         docker push ${{ secrets.DOCKER_USERNAME }}/projet-frontend:latest
 
-    - name: Build and push accounts-service
+    - name: Build and push accounts-service if changed
+      if: contains(env.CHANGED_DIRS, 'services/accounts-service')
       run: |
         docker build -t ${{ secrets.DOCKER_USERNAME }}/projet-accounts:latest ./services/accounts-service
         docker push ${{ secrets.DOCKER_USERNAME }}/projet-accounts:latest
 
-    - name: Build and push user-service
+    - name: Build and push user-service if changed
+      if: contains(env.CHANGED_DIRS, 'services/users-service')
       run: |
         docker build -t ${{ secrets.DOCKER_USERNAME }}/projet-user:latest ./services/users-service
         docker push ${{ secrets.DOCKER_USERNAME }}/projet-user:latest
@@ -46,4 +56,3 @@ jobs:
           echo "${{ secrets.DOCKER_TOKEN }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
           docker compose pull
           docker compose up -d
-
