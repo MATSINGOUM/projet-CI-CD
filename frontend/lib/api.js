@@ -1,8 +1,8 @@
 // ================================
 // BASE URLS (MICROSERVICES)
 // ================================
-const AUTH_API_URL = "/api/users";      // users + auth http://localhost:8000/api
-const BANK_API_URL = "/api/accounts";      // accounts + transactions http://localhost:8001/api
+const AUTH_API_URL = "/api/users/";      // users + auth http://localhost:8000/api
+const BANK_API_URL = "/api/accounts/";      // accounts + transactions http://localhost:8001/api
 
 // ================================
 // AUTH
