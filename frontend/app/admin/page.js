@@ -2,11 +2,11 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
-export default function Home() {
+export default function AdminDashboard() {
   const router = useRouter();
 
   useEffect(() => {
-    router.push("/login");
+    router.push("/admin/users");
   }, [router]);
 
   return null;

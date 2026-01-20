@@ -1,7 +1,14 @@
-const API_URL = "http://localhost:8000/api";
+// ================================
+// BASE URLS (MICROSERVICES)
+// ================================
+const AUTH_API_URL = "http://localhost:8000/api";      // users + auth
+const BANK_API_URL = "http://localhost:8001/api";      // accounts + transactions
 
+// ================================
+// AUTH
+// ================================
 export async function login(email, password) {
-  const res = await fetch(`${API_URL}/login`, {
+  const res = await fetch(`${AUTH_API_URL}/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password }),
@@ -9,8 +16,29 @@ export async function login(email, password) {
   return res.json();
 }
 
+export async function register(data) {
+  const res = await fetch(`${AUTH_API_URL}/register`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  return res.json();
+}
+
+export async function logout(token) {
+  await fetch(`${AUTH_API_URL}/logout`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+}
+
+// ================================
+// USERS (microservice auth)
+// ================================
 export async function getUsers(token) {
-  const res = await fetch(`${API_URL}/users`, {
+  const res = await fetch(`${AUTH_API_URL}/users`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -19,7 +47,7 @@ export async function getUsers(token) {
 }
 
 export async function deleteUser(id, token) {
-  await fetch(`${API_URL}/users/${id}`, {
+  await fetch(`${AUTH_API_URL}/users/${id}`, {
     method: "DELETE",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -27,14 +55,62 @@ export async function deleteUser(id, token) {
   });
 }
 
+// ================================
+// ACCOUNTS (microservice bancaire)
+// ================================
 export async function getAccounts(userId) {
-  const res = await fetch(`${API_URL}/users/${userId}/accounts`);
+  const res = await fetch(`${BANK_API_URL}/users/${userId}/accounts`);
+  return res.json();
+}
+
+export async function createAccount(data) {
+  const res = await fetch(`${BANK_API_URL}/accounts`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
   return res.json();
 }
 
 export async function deactivateAccount(id) {
-  await fetch(`${API_URL}/accounts/${id}/deactivate`, {
+  await fetch(`${BANK_API_URL}/accounts/${id}/deactivate`, {
     method: "PATCH",
   });
 }
 
+// ================================
+// TRANSACTIONS
+// ================================
+export async function deposit(data) {
+  const res = await fetch(`${BANK_API_URL}/deposit`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  return res.json();
+}
+
+export async function withdraw(data) {
+  const res = await fetch(`${BANK_API_URL}/withdraw`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  return res.json();
+}
+
+export async function transfer(data) {
+  const res = await fetch(`${BANK_API_URL}/transfer`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  return res.json();
+}
+
+export async function getTransactions(accountId) {
+  const res = await fetch(
+    `${BANK_API_URL}/accounts/${accountId}/transactions`
+  );
+  return res.json();
+}
