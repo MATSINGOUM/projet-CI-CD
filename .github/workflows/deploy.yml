@@ -56,11 +56,20 @@ jobs:
         key: ${{ secrets.EC2_KEY }}
         script: |
           set -e
-          cd /home/ubuntu/projet-CI-CD
-          
-          echo "Pulling latest docker-compose & nginx config..."
-          git reset --hard
-          git pull origin main
+
+          PROJECT_DIR="/home/ubuntu/projet-CI-CD"
+          REPO_URL="https://github.com/MATSINGOUM/projet-CI-CD.git"
+
+          if [ -d "$PROJECT_DIR/.git" ]; then
+            echo "Repository already exists, pulling latest changes..."
+            cd $PROJECT_DIR
+            git reset --hard
+            git pull origin main
+          else
+            echo "Repository not found, cloning..."
+            git clone $REPO_URL $PROJECT_DIR
+            cd $PROJECT_DIR
+          fi
 
           echo "Stopping containers..."
           docker compose down || true
@@ -76,3 +85,4 @@ jobs:
 
           echo "Starting containers (force recreate)..."
           docker compose up -d --force-recreate
+

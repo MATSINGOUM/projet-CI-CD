@@ -12,6 +12,9 @@ COPY . .
 
 RUN composer install --no-dev --optimize-autoloader
 
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
 EXPOSE 9000
 
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=9000"]
+ENTRYPOINT ["/entrypoint.sh"]
