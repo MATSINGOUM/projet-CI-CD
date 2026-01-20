@@ -47,7 +47,7 @@ jobs:
     - name: Prepare EC2 folder
       uses: appleboy/ssh-action@v1.0.3
       with:
-        host: ${{ secrets.EC2_HOST }}
+        host: 16.171.3.224
         username: ubuntu
         key: ${{ secrets.EC2_KEY }}
         script: |
@@ -57,7 +57,7 @@ jobs:
       if: steps.changes.outputs.compose == 'true'
       uses: appleboy/scp-action@v0.1.7
       with:
-        host: ${{ secrets.EC2_HOST }}
+        host: 16.171.3.224
         username: ubuntu
         key: ${{ secrets.EC2_KEY }}
         source: "docker-compose.yml"
@@ -67,7 +67,7 @@ jobs:
       if: steps.changes.outputs.frontend == 'true' || steps.changes.outputs.accounts == 'true' || steps.changes.outputs.users == 'true' || steps.changes.outputs.compose == 'true'
       uses: appleboy/ssh-action@v1.0.3
       with:
-        host: ${{ secrets.EC2_HOST }}
+        host: 16.171.3.224
         username: ubuntu
         key: ${{ secrets.EC2_KEY }}
         script: |
