@@ -1,7 +1,7 @@
 import "./globals.css";
 
 export const metadata = {
-  title: "Bank Admin Panel",
+  title: "Bank Admin Panel 1235",
   description: "Gestion des utilisateurs et comptes bancaires",
 };
 
