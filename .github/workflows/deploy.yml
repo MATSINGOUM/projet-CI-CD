@@ -1,16 +1,19 @@
 name: CI/CD Deploy to EC2
+
 on:
   push:
     branches: ["main"]
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+
     steps:
     - name: Checkout repo
       uses: actions/checkout@v4
       with:
         fetch-depth: 2
-    
+
     - name: Check for changes
       id: changes
       run: |
@@ -18,32 +21,32 @@ jobs:
         echo "accounts=$(git diff --name-only HEAD^ HEAD | grep -q '^services/accounts-service/' && echo 'true' || echo 'false')" >> $GITHUB_OUTPUT
         echo "users=$(git diff --name-only HEAD^ HEAD | grep -q '^services/users-service/' && echo 'true' || echo 'false')" >> $GITHUB_OUTPUT
         echo "compose=$(git diff --name-only HEAD^ HEAD | grep -q '^docker-compose.yml' && echo 'true' || echo 'false')" >> $GITHUB_OUTPUT
-    
+
     - name: Log in to Docker Hub
       if: steps.changes.outputs.frontend == 'true' || steps.changes.outputs.accounts == 'true' || steps.changes.outputs.users == 'true'
       uses: docker/login-action@v2
       with:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_TOKEN }}
-    
+
     - name: Build and push frontend
       if: steps.changes.outputs.frontend == 'true'
       run: |
         docker build -t ${{ secrets.DOCKER_USERNAME }}/projet-frontend:latest ./frontend
         docker push ${{ secrets.DOCKER_USERNAME }}/projet-frontend:latest
-    
+
     - name: Build and push accounts-service
       if: steps.changes.outputs.accounts == 'true'
       run: |
         docker build -t ${{ secrets.DOCKER_USERNAME }}/projet-accounts:latest ./services/accounts-service
         docker push ${{ secrets.DOCKER_USERNAME }}/projet-accounts:latest
-    
-    - name: Build and push user-service
+
+    - name: Build and push users-service
       if: steps.changes.outputs.users == 'true'
       run: |
         docker build -t ${{ secrets.DOCKER_USERNAME }}/projet-user:latest ./services/users-service
         docker push ${{ secrets.DOCKER_USERNAME }}/projet-user:latest
-    
+
     - name: Prepare EC2 folder
       uses: appleboy/ssh-action@v1.0.3
       with:
@@ -52,7 +55,7 @@ jobs:
         key: ${{ secrets.EC2_KEY }}
         script: |
           mkdir -p /home/ubuntu/projet-CI-CD
-    
+
     - name: Copy docker-compose.yml to EC2
       if: steps.changes.outputs.compose == 'true'
       uses: appleboy/scp-action@v0.1.7
@@ -62,8 +65,8 @@ jobs:
         key: ${{ secrets.EC2_KEY }}
         source: "docker-compose.yml"
         target: "/home/ubuntu/projet-CI-CD/docker-compose.yml"
-    
-    - name: Deploy on EC2
+
+    - name: Deploy on EC2 (FORCE UPDATE)
       if: steps.changes.outputs.frontend == 'true' || steps.changes.outputs.accounts == 'true' || steps.changes.outputs.users == 'true' || steps.changes.outputs.compose == 'true'
       uses: appleboy/ssh-action@v1.0.3
       with:
@@ -71,8 +74,25 @@ jobs:
         username: ubuntu
         key: ${{ secrets.EC2_KEY }}
         script: |
+          set -e
           cd /home/ubuntu/projet-CI-CD
+
+          
+          echo "Pulling latest docker-compose & nginx config..."
+          git reset --hard
+          git pull origin main
+
+          echo "Stopping containers..."
           docker compose down || true
-          echo "${{ secrets.DOCKER_TOKEN }}" | sudo docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-          docker compose pull
-          docker compose up -d
+
+          echo "Removing old images..."
+          docker image prune -af
+
+          echo "Docker login..."
+          echo "${{ secrets.DOCKER_TOKEN }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+          echo "Pulling latest images..."
+          docker compose pull --no-parallel
+
+          echo "Starting containers (force recreate)..."
+          docker compose up -d --force-recreate

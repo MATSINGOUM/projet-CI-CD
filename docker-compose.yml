@@ -1,14 +1,55 @@
+version: "3.9"
+
 services:
+  postgres-accounts:
+    image: postgres:15
+    container_name: postgres-accounts
+    restart: always
+    environment:
+      POSTGRES_DB: accounts_db
+      POSTGRES_USER: accounts_user
+      POSTGRES_PASSWORD: accounts_password
+    volumes:
+      - accounts_pgdata:/var/lib/postgresql/data
+
+  postgres-users:
+    image: postgres:15
+    container_name: postgres-users
+    restart: always
+    environment:
+      POSTGRES_DB: users_db
+      POSTGRES_USER: users_user
+      POSTGRES_PASSWORD: users_password
+    volumes:
+      - users_pgdata:/var/lib/postgresql/data
 
   accounts-service:
     image: especha/projet-accounts:latest
     container_name: accounts-service
     restart: always
+    depends_on:
+      - postgres-accounts
+    environment:
+      DB_CONNECTION: pgsql
+      DB_HOST: postgres-accounts
+      DB_PORT: 5432
+      DB_DATABASE: accounts_db
+      DB_USERNAME: accounts_user
+      DB_PASSWORD: accounts_password
 
   user-service:
     image: especha/projet-user:latest
     container_name: user-service
     restart: always
+    depends_on:
+      - postgres-users
+    environment:
+      DB_CONNECTION: pgsql
+      DB_HOST: postgres-users
+      DB_PORT: 5432
+      DB_DATABASE: users_db
+      DB_USERNAME: users_user
+      DB_PASSWORD: users_password
 
   frontend:
     image: especha/projet-frontend:latest
@@ -17,11 +58,16 @@ services:
 
   nginx:
     image: nginx:alpine
+    container_name: nginx
     ports:
       - "80:80"
     volumes:
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
     depends_on:
+      - frontend
       - accounts-service
       - user-service
-      - frontend
+
+volumes:
+  accounts_pgdata:
+  users_pgdata:
