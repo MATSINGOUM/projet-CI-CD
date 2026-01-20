@@ -1,9 +1,9 @@
 export default function AccountTable({ accounts, onDeactivate }) {
-  const formatCurrency = (amount) => {
+  const formatCurrency = (balance) => {
     return new Intl.NumberFormat('fr-FR', {
       style: 'currency',
       currency: 'XAF'
-    }).format(amount);
+    }).format(balance);
   };
 
   const formatDate = (dateString) => {
