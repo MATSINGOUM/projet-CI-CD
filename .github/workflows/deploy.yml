@@ -5,7 +5,7 @@ on:
     branches: ["main"]
 
 env:
-  EC2_HOST: 16.170.240.15
+  EC2_HOST: 13.51.150.107
 
 jobs:
   build-and-deploy:
