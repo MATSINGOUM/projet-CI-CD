@@ -20,6 +20,7 @@
         </include>
     </source>
 
+
     <php>
         <env name="APP_ENV" value="testing"/>
         <env name="APP_KEY" value="base64:2fl+Ktvkfl+BXM/BBBkKM4OOh9U3H+6ckW/7BtGoQd4="/>

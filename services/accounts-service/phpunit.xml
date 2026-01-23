@@ -25,23 +25,6 @@
         </include>
     </source>
 
-    <!-- RAPPORTS MULTIPLES -->
-    <logging>
-        <!-- Rapport HTML détaillé -->
-        <testdoxHtml outputFile="tests/report.html"/>
-
-        <!-- Rapport JUnit (pour CI/CD) -->
-        <junit outputFile="tests/report.junit.xml"/>
-
-        <!-- Rapport texte -->
-        <testdoxText outputFile="tests/report.txt"/>
-
-        <!-- Couverture de code -->
-        <coverage-html outputDirectory="tests/coverage"/>
-        <coverage-clover outputFile="tests/coverage.xml"/>
-        <coverage-text outputFile="tests/coverage.txt" showUncoveredFiles="true"/>
-    </logging>
-
     <php>
         <env name="APP_ENV" value="testing"/>
         <env name="BCRYPT_ROUNDS" value="4"/>
