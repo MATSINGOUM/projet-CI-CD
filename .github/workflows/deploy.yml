@@ -35,11 +35,38 @@ jobs:
         docker build -t ${{ secrets.DOCKER_USERNAME }}/projet-frontend:latest ./frontend
         docker push ${{ secrets.DOCKER_USERNAME }}/projet-frontend:latest
 
+    - name: Run tests for accounts-service
+      if: steps.changes.outputs.accounts == 'true'
+      run: |
+        cd services/accounts-service
+        php artisan test --log-junit tests-report.xml
+    
+    - name: Upload test report (accounts)
+      if: steps.changes.outputs.accounts == 'true'
+      uses: actions/upload-artifact@v4
+      with:
+        name: accounts-tests-report
+        path: services/accounts-service/tests-report.xml
+
     - name: Build and push accounts-service
       if: steps.changes.outputs.accounts == 'true'
       run: |
         docker build -t ${{ secrets.DOCKER_USERNAME }}/projet-accounts:latest ./services/accounts-service
         docker push ${{ secrets.DOCKER_USERNAME }}/projet-accounts:latest
+
+    - name: Run tests for users-service
+      if: steps.changes.outputs.users == 'true'
+      run: |
+        cd services/users-service
+        php artisan test --log-junit tests-report.xml
+
+    - name: Upload test report (users)
+      if: steps.changes.outputs.users == 'true'
+      uses: actions/upload-artifact@v4
+      with:
+        name: users-tests-report
+        path: services/users-service/tests-report.xml
+
 
     - name: Build and push users-service
       if: steps.changes.outputs.users == 'true'

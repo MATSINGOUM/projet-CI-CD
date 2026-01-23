@@ -1,0 +1,35 @@
+Account Controller (Tests\Unit\AccountController)
+ [x] It can list all accounts for a user
+ [x] It returns empty array when user has no accounts
+ [x] It validates required fields when creating account
+ [x] It validates account type when creating account
+ [x] It validates user id is integer
+ [x] It can show a specific account
+ [x] It returns 404 when account not found
+ [x] It can deactivate an account
+ [x] It can deactivate already inactive account
+ [x] It returns 404 when deactivating nonexistent account
+ [x] Account number is generated automatically and unique
+ [x] Balance is always zero on account creation
+
+Example (Tests\Feature\Example)
+ [x] The application returns a successful response
+
+Example (Tests\Unit\Example)
+ [x] That true is true
+
+Transaction Controller (Tests\Unit\TransactionController)
+ [x] It can deposit money into an account
+ [x] It validates deposit data
+ [x] It can withdraw money from an account
+ [x] It prevents withdrawal when insufficient balance
+ [x] It can transfer money between accounts
+ [x] It validates transfer data
+ [x] It can get transaction history for an account
+ [x] It returns empty history for account with no transactions
+ [x] Transaction history is ordered by creation date descending
+ [x] It handles deposit with decimal amounts
+ [x] It prevents transfer to nonexistent account
+ [x] It allows withdrawal with exact balance
+ [x] It handles multiple deposits correctly
+
