@@ -19,7 +19,7 @@ L’accent est mis sur :
 * L’intégration continue avec **GitHub Actions** ;
 * Le déploiement sur une infrastructure cloud (**AWS EC2**).
 
-> ⚠️ **NB** : Les mesures de sécurité au niveau métier sont volontairement limitées. L’objectif est de disposer d’une application fonctionnelle dans un contexte pédagogique.
+>  **NB** : Les mesures de sécurité au niveau métier sont volontairement limitées. L’objectif est de disposer d’une application fonctionnelle dans un contexte pédagogique.
 
 ---
 
@@ -89,7 +89,7 @@ Nom de l’instance : `projet cloud CI/CD`.
 
 La chaîne CI/CD est implémentée via **GitHub Actions**, déclenchée automatiquement à chaque modification du code source.
 
-> ⚠️ **Important** : Pour ce projet, **seuls quelques tests unitaires ont été écrits manuellement** pour valider le pipeline. L’accent est mis sur la mise en œuvre du CI/CD plutôt que sur une couverture complète de tests.
+> **Important** : Pour ce projet, **seuls quelques tests unitaires ont été écrits manuellement** pour valider le pipeline. L’accent est mis sur la mise en œuvre du CI/CD plutôt que sur une couverture complète de tests.
 
 ### Étapes du pipeline
 
@@ -117,7 +117,6 @@ Pour lancer l’application :
 4. Lancer le workflow **deploy.yaml** via GitHub Actions.
 
 > Le déploiement est entièrement automatisé.
-> ⚠️ Même avec seulement quelques tests unitaires manuels, le pipeline garantit la mise à jour sécurisée des services.
 
 ---
 
