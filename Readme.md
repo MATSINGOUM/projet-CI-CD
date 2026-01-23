@@ -161,7 +161,7 @@ Vérifier que le pipeline :
 
 ### Test 2 : Tests automatisés
 
-1. Introduire volontairement une erreur dans un test manuel ;
+1. Introduire volontairement une erreur dans un des tests prévus ;
 2. Pousser sur GitHub ;
 3. Observer le pipeline.
 
@@ -188,12 +188,5 @@ Vérifier que le pipeline :
 
 Ce projet montre la mise en œuvre complète d’un pipeline **CI/CD fonctionnel** pour une application microservices conteneurisée, déployée dans le cloud.
 
-> ⚠️ Même si **seuls quelques tests unitaires ont été écrits manuellement**, le pipeline permet :
->
-> * La conteneurisation ;
-> * L’orchestration ;
-> * L’intégration continue ;
-> * Le déploiement continu ;
-> * L’exploitation d’une infrastructure cloud.
 
 ---
