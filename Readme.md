@@ -4,7 +4,7 @@
 
 Ce projet a été réalisé dans le cadre du cours de **Cloud Computing (HN5 – année académique 2025/2026)**, dispensé par **le professeur Mvondo Djob**.
 
-L’objectif principal est la **mise en place d’un pipeline CI/CD complet**, appliqué à une application concrète déployée dans le cloud.
+L’objectif principal est la **mise en place d’un pipeline CI/CD**, pour une application web déployée sur un serveur cloud.
 
 ---
 
