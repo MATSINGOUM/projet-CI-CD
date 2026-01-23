@@ -1,77 +1,58 @@
 version: "3.9"
 
 services:
-  mysql-accounts:
-    image: mysql:8.0
-    container_name: mysql-accounts
+  postgres-users:
+    image: postgres:15
+    container_name: postgres-users
     restart: always
     environment:
-      MYSQL_DATABASE: accounts_db
-      MYSQL_USER: accounts_user
-      MYSQL_PASSWORD: accounts_password
-      MYSQL_ROOT_PASSWORD: root_password
+      POSTGRES_DB: users_db
+      POSTGRES_USER: users_user
+      POSTGRES_PASSWORD: users_password
     volumes:
-      - accounts_mysql:/var/lib/mysql
+      - users_pg:/var/lib/postgresql/data
 
-  mysql-users:
-    image: mysql:8.0
-    container_name: mysql-users
+  postgres-accounts:
+    image: postgres:15
+    container_name: postgres-accounts
     restart: always
     environment:
-      MYSQL_DATABASE: users_db
-      MYSQL_USER: users_user
-      MYSQL_PASSWORD: users_password
-      MYSQL_ROOT_PASSWORD: root_password
+      POSTGRES_DB: accounts_db
+      POSTGRES_USER: accounts_user
+      POSTGRES_PASSWORD: accounts_password
     volumes:
-      - users_mysql:/var/lib/mysql
-
-  accounts-service:
-    image: especha/projet-accounts:latest
-    container_name: accounts-service
-    restart: always
-    depends_on:
-      - mysql-accounts
-    environment:
-      DB_CONNECTION: mysql
-      DB_HOST: mysql-accounts
-      DB_PORT: 3306
-      DB_DATABASE: accounts_db
-      DB_USERNAME: accounts_user
-      DB_PASSWORD: accounts_password
-      SESSION_DRIVER: database
+      - accounts_pg:/var/lib/postgresql/data
 
   user-service:
     image: especha/projet-user:latest
     container_name: user-service
     restart: always
     depends_on:
-      - mysql-users
+      - postgres-users
     environment:
-      DB_CONNECTION: mysql
-      DB_HOST: mysql-users
-      DB_PORT: 3306
+      DB_CONNECTION: pgsql
+      DB_HOST: postgres-users
+      DB_PORT: 5432
       DB_DATABASE: users_db
       DB_USERNAME: users_user
       DB_PASSWORD: users_password
       SESSION_DRIVER: database
 
-  frontend:
-    image: especha/projet-frontend:latest
-    container_name: frontend
+  accounts-service:
+    image: especha/projet-accounts:latest
+    container_name: accounts-service
     restart: always
-
-  nginx:
-    image: nginx:alpine
-    container_name: nginx
-    ports:
-      - "80:80"
-    volumes:
-      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
     depends_on:
-      - frontend
-      - accounts-service
-      - user-service
+      - postgres-accounts
+    environment:
+      DB_CONNECTION: pgsql
+      DB_HOST: postgres-accounts
+      DB_PORT: 5432
+      DB_DATABASE: accounts_db
+      DB_USERNAME: accounts_user
+      DB_PASSWORD: accounts_password
+      SESSION_DRIVER: database
 
 volumes:
-  accounts_mysql:
-  users_mysql:
+  users_pg:
+  accounts_pg:
