@@ -48,10 +48,9 @@ jobs:
         docker push ${{ secrets.DOCKER_USERNAME }}/projet-user:latest
 
     - name: Deploy on EC2 (FORCE UPDATE)
-      if: steps.changes.outputs.frontend == 'true' || steps.changes.outputs.accounts == 'true' || steps.changes.outputs.users == 'true' || steps.changes.outputs.compose == 'true'
       uses: appleboy/ssh-action@v1.0.3
       with:
-        host: 16.171.3.224
+        host: 51.20.64.29
         username: ubuntu
         key: ${{ secrets.EC2_KEY }}
         script: |
