@@ -140,8 +140,6 @@ Une fois l’application déployée, les mises à jour sont entièrement automat
   * Construction et push de la nouvelle image Docker ;
   * Redémarrage automatique des conteneurs sur EC2.
 
-> ⚠️ Encore une fois, la validation repose sur **quelques tests unitaires manuels**, suffisants pour ce projet pédagogique.
-
 ---
 
 ## Test du pipeline CI/CD
