@@ -104,22 +104,30 @@ La chaîne CI/CD est implémentée via **GitHub Actions**, déclenchée automati
 
 ## Procédure de déploiement
 
-Pour lancer l’application :
+Pour lancer l’application, il suffit de suivre les étapes suivantes :
 
-1. Démarrer l’instance EC2 `projet cloud CI/CD` ;
-2. Récupérer l’**IPv4 publique** de l’instance ;
-3. Remplacer cette adresse dans :
+1. Démarrer l’instance EC2 **`projet cloud CI/CD`** ;
+2. Récupérer l’**adresse IPv4 publique** de l’instance ;
+3. Remplacer cette adresse dans le fichier :
 
 ```text
 .github/workflows/deploy.yaml
 ```
 
-4. Lancer le workflow **deploy.yaml** via GitHub Actions.
+4. Valider et pousser les modifications sur le dépôt GitHub.
 
-> Le déploiement est entièrement automatisé.
-> Il ne reste plus qu’à accéder à l’application via l’adresse IPv4 publique de l’instance EC2, en utilisant un navigateur web et le protocole HTTP.
+Le déploiement est alors **entièrement automatisé** grâce au pipeline CI/CD.
+
+Une fois le déploiement terminé, il ne reste plus qu’à **accéder à l’application via un navigateur web**, en utilisant l’adresse IPv4 publique de l’instance EC2 et le protocole **HTTP**.
+
+> **Identifiants par défaut** :
+>
+> * Email : `admin@gmail.com`
+> * Mot de passe : `password`
 
 ---
+
+
 
 ## Mise à jour continue
 
