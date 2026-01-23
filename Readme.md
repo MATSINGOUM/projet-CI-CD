@@ -117,6 +117,7 @@ Pour lancer l’application :
 4. Lancer le workflow **deploy.yaml** via GitHub Actions.
 
 > Le déploiement est entièrement automatisé.
+> Il ne reste plus qu’à accéder à l’application via l’adresse IPv4 publique de l’instance EC2, en utilisant un navigateur web et le protocole HTTP.
 
 ---
 
