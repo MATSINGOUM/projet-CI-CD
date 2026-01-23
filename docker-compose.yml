@@ -1,55 +1,59 @@
 version: "3.9"
 
 services:
-  postgres-accounts:
-    image: postgres:15
-    container_name: postgres-accounts
+  mysql-accounts:
+    image: mysql:8.0
+    container_name: mysql-accounts
     restart: always
     environment:
-      POSTGRES_DB: accounts_db
-      POSTGRES_USER: accounts_user
-      POSTGRES_PASSWORD: accounts_password
+      MYSQL_DATABASE: accounts_db
+      MYSQL_USER: accounts_user
+      MYSQL_PASSWORD: accounts_password
+      MYSQL_ROOT_PASSWORD: root_password
     volumes:
-      - accounts_pgdata:/var/lib/postgresql/data
+      - accounts_mysql:/var/lib/mysql
 
-  postgres-users:
-    image: postgres:15
-    container_name: postgres-users
+  mysql-users:
+    image: mysql:8.0
+    container_name: mysql-users
     restart: always
     environment:
-      POSTGRES_DB: users_db
-      POSTGRES_USER: users_user
-      POSTGRES_PASSWORD: users_password
+      MYSQL_DATABASE: users_db
+      MYSQL_USER: users_user
+      MYSQL_PASSWORD: users_password
+      MYSQL_ROOT_PASSWORD: root_password
     volumes:
-      - users_pgdata:/var/lib/postgresql/data
+      - users_mysql:/var/lib/mysql
 
   accounts-service:
     image: especha/projet-accounts:latest
     container_name: accounts-service
     restart: always
     depends_on:
-      - postgres-accounts
+      - mysql-accounts
     environment:
-      DB_CONNECTION: pgsql
-      DB_HOST: postgres-accounts
-      DB_PORT: 5432
+      DB_CONNECTION: mysql
+      DB_HOST: mysql-accounts
+      DB_PORT: 3306
       DB_DATABASE: accounts_db
       DB_USERNAME: accounts_user
       DB_PASSWORD: accounts_password
+      SESSION_DRIVER: database
 
   user-service:
     image: especha/projet-user:latest
     container_name: user-service
     restart: always
     depends_on:
-      - postgres-users
+      - mysql-users
     environment:
-      DB_CONNECTION: pgsql
-      DB_HOST: postgres-users
-      DB_PORT: 5432
+      DB_CONNECTION: mysql
+      DB_HOST: mysql-users
+      DB_PORT: 3306
       DB_DATABASE: users_db
       DB_USERNAME: users_user
       DB_PASSWORD: users_password
+      SESSION_DRIVER: database
 
   frontend:
     image: especha/projet-frontend:latest
@@ -69,5 +73,5 @@ services:
       - user-service
 
 volumes:
-  accounts_pgdata:
-  users_pgdata:
+  accounts_mysql:
+  users_mysql:
